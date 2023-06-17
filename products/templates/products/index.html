@@ -1,0 +1,93 @@
+{% extends 'bootstrap5/bootstrap5.html' %}
+
+{% load bootstrap5 %}
+{% load static %}
+{% load mptt_tags %}
+
+{% block bootstrap5_title %}Main{% endblock %}
+
+{% block bootstrap5_content %}
+
+    {% include 'navbar_main.html' %}
+
+    {#  CAROUSEL  #}
+
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'images/widok_przed_schroniskiem.jpg' %}" class="d-block w-100"
+                     alt="morskie_oko">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Droga do schroniska PTTK Morskie Oko</h5>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/widok_na_czarny_staw.jpg' %}" class="d-block w-100"
+                     alt="widok_z_hotelu">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Czarny Staw</h5>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/morskie_oko.jpg' %}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Morskie Oko</h5>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <br><br>
+
+    {#  NEWEST PRODUCTS  #}
+
+    <div class="container">
+        <div class="row">
+                <p class="text-center fs-4 fw-bold">
+                    NOWOŚCI
+                </p>
+            <div class="card-body">
+                <div class="row row-cols-1 row-cols-md-4 g-4">
+                    {% for product in new_products %}
+                        <div class="col mb-4">
+                            <div class="card h-100">
+                                <img src="{{ product.image.url }}" class="card-img-top"
+                                     style="width: 200px; height: 200px;"
+                                     alt={{ product.name }}>
+                                <div class="card-body">
+                                    <h5 class="card-title fs-6 text-center">{{ product.name }}</h5>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="text-muted">{{ product.price }} PLN</div>
+                                        <a href="#" class="btn btn-success">Dodaj do koszyka</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+{% endblock %}

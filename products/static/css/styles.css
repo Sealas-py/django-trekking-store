@@ -1,0 +1,32 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.navbar-nav > li{
+  padding-left:7px;
+  padding-right:7px;
+}
+
+.root-in-product{
+    color: black;
+    font-size: 11px;
+}
+
+.root-in-product:hover{
+    color: firebrick;
+}
+
+.product-in-root-product{
+    color: firebrick;
+    font-size: 11px;
+}
+
+.product-in-root-product:hover{
+    color: firebrick;
+}
+
+.price-font{
+    color: #dc5d01;
+    font-weight: bold;
+    font-size: 18px;
+}

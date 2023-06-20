@@ -1,0 +1,35 @@
+{% extends 'bootstrap5/bootstrap5.html' %}
+
+{% load bootstrap5 %}
+{% load mptt_tags %}
+{% load static %}
+
+{% block bootstrap5_title %}Wyloguj{% endblock %}
+
+{% block bootstrap5_content %}
+
+    {% include 'navbar.html' %}
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <h2 class="text-center">Wylogowanie</h2>
+                <p class="mt-4">Jesteś pewny, że chcesz się wylogować?</p>
+
+                <form method="post" action="{% url 'account_logout' %}">
+                    {% csrf_token %}
+
+                    {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-danger mt-3">Wyloguj</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+{% endblock %}

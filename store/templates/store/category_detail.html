@@ -7,29 +7,35 @@
 {% block bootstrap5_title %}{{ object.name }}{% endblock %}
 
 {% block bootstrap5_content %}
-    {% include 'navbar_category.html' %}
 
+    {% include 'navbar.html' %}
 
     {#  CATEGORIES  #}
 
     <div class="container-fluid min-vh-100 d-flex flex-column">
         <div class="row flex-grow-1">
             <div class="col-2 bg-dark">
+
                 {% if object.parent is not None %}
                     <a class="nav-link text-light" href="{{ object.parent.get_absolute_url }}">
                         <h3>{{ object.parent }}</h3></a>
                 {% endif %}
+
                 <a class="nav-link text-light" href="{% url 'category' object.slug %}"><h5>{{ object.name }}</h5></a>
                 <ul class="nav flex-column vh-100">
+
                     {% recursetree categories %}
                         <li class="nav-item">
                         <a class="nav-link text-light" href="{% url 'category' node.slug %}">{{ node.name }}</a>
+
                         {% if node.get_children %}
                             <ul>
                                 {{ children }}
                             </ul>
                         {% endif %}
+
                     {% endrecursetree %}
+
                 </ul>
             </div>
 
@@ -37,6 +43,7 @@
 
             <div class="col p-2">
                 <div class="row p-3">
+
                     {% for product in store_products %}
                         <div class="col-3 mb-5">
                             <div class="card h-100 content-center text-center" style="width: 18rem;">
@@ -53,7 +60,19 @@
                                 <div class="card-footer">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="text-muted">{{ product.price }} PLN</div>
-                                        <a href="#" class="btn btn-success">Dodaj do koszyka</a>
+
+                                        {% if user.is_authenticated %}
+                                            <div class="row">
+                                                <div class="col text-end">
+                                                    <form method="post" action="{% url 'product' product.slug %}">
+                                                        {% csrf_token %}
+                                                        <button class="btn btn-success" type="submit">Dodaj do koszyka
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
                                     </div>
                                 </div>
                             </div>
@@ -62,15 +81,15 @@
 
                     {# PARENT PPRODUCTS #}
 
-                            {% for product in parent_products %}
-                                <div class="col-3 mb-5">
-                                    <div class="card h-100 content-center text-center" style="width: 18rem;">
-                                        <a href="{% url 'product' product.slug %}">
-                                            <img src="{{ product.image.url }}"
+                    {% for product in parent_products %}
+                        <div class="col-3 mb-5">
+                            <div class="card h-100 content-center text-center" style="width: 18rem;">
+                                <a href="{% url 'product' product.slug %}">
+                                    <img src="{{ product.image.url }}"
                                          class="card-img-top align-self-center"
                                          style="width: 200px; height: 200px;"
                                          alt="product image"></a>
-                                        <div class="card-body">
+                                <div class="card-body">
                                     <a href="{% url 'product' product.slug %}" class="text-decoration-none">
                                         <h5 class="card-title fs-6 text-center text-uppercase text-dark">{{ product.name }}</h5>
                                     </a>
@@ -78,7 +97,19 @@
                                 <div class="card-footer">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="text-muted">{{ product.price }} PLN</div>
-                                        <a href="#" class="btn btn-success">Dodaj do koszyka</a>
+
+                                        {% if user.is_authenticated %}
+                                            <div class="row">
+                                                <div class="col text-end">
+                                                    <form method="post" action="{% url 'product' product.slug %}">
+                                                        {% csrf_token %}
+                                                        <button class="btn btn-success" type="submit">Dodaj do koszyka
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
                                     </div>
                                 </div>
                             </div>
@@ -103,15 +134,31 @@
                                 <div class="card-footer">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="text-muted">{{ product.price }} PLN</div>
-                                        <a href="#" class="btn btn-success">Dodaj do koszyka</a>
+
+                                        {% if user.is_authenticated %}
+                                            <div class="row">
+                                                <div class="col text-end">
+                                                    <form method="post" action="{% url 'product' product.slug %}">
+                                                        {% csrf_token %}
+                                                        <button class="btn btn-success" type="submit">Dodaj do koszyka
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     {% endfor %}
+
                 </div>
             </div>
-        {% include 'footer.html' %}
+
+            {% include 'footer.html' %}
+
         </div>
     </div>
+
 {% endblock %}

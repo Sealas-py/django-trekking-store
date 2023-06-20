@@ -1,0 +1,71 @@
+{% extends 'bootstrap5/bootstrap5.html' %}
+
+{% load bootstrap5 %}
+{% load mptt_tags %}
+{% load static %}
+
+{% block bootstrap5_title %}Koszyk{% endblock %}
+
+{% block bootstrap5_content %}
+
+    {% include 'navbar.html' %}
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col">
+                <h3>Koszyk</h3>
+
+                {% if not cart.items.count %}
+                    <div class="alert alert-info">Koszyk jest pusty</div>
+
+                {% else %}
+                    <table class="table table-success table-striped">
+                        <thead>
+                        <tr>
+                            <th>Produkt</th>
+                            <th>Cena</th>
+                            <th>Ilość</th>
+                            <th>Razem</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for item in cart.items.all %}
+                            <tr>
+                                <td><a href="{% url 'product' item.product.slug %}">{{ item.product.name }}</a></td>
+                                <td>{{ item.product.price }} PLN</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{% widthratio item.product.price 1 item.quantity %} PLN</td>
+                                <td class="text-end">
+                                    <form method="post" action="{% url 'cart' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="remove_item">
+                                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                                        <button class="btn btn-danger btn-sm" type="submit">Usuń</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                {% endif %}
+
+            </div>
+        </div>
+
+        {% if cart.items.count %}
+            <br>
+            <div class="row">
+                <div class="col text-center">
+                    <a class="btn btn-primary" href="{% url 'place_order' %}">Zamów</a>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+    {% include 'footer.html' %}
+
+{% endblock %}

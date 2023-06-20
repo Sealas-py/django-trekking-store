@@ -17,15 +17,20 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
-from products.views import CategoryDetailView,  IndexView, ProductDetailView
+from store.views import CategoryDetailView, IndexView, ProductDetailView, CartView, OrderView, UserProfileView, \
+    UserOrdersView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name='index'),
+    path('accounts/', include('allauth.urls')),
     path('category/<slug:slug>', CategoryDetailView.as_view(), name='category'),
     path('product/<slug:slug>', ProductDetailView.as_view(), name='product'),
+    path('cart', CartView.as_view(), name='cart'),
+    path('order', OrderView.as_view(), name='place_order'),
+    path('profile', UserProfileView.as_view(), name='user_profile'),
+    path('profile/orders', UserOrdersView.as_view(), name='user_orders'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
               + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-

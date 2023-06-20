@@ -1,0 +1,66 @@
+{% extends 'bootstrap5/bootstrap5.html' %}
+
+{% load bootstrap5 %}
+{% load mptt_tags %}
+{% load static %}
+
+{% block bootstrap5_title %}Twoje zamówienia{% endblock %}
+
+{% block bootstrap5_content %}
+
+    {% include 'navbar.html' %}
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col">
+                <h3>Twoje zamówienia:</h3>
+
+                {% if not orders.count %}
+                    <div class="alert alert-info">Nie złożyłeś jeszcze swojego pierwszego zamówienia. <a
+                            class="active fs-6" href="{% url 'category' 'sklep' %}">Złóż zamówienie</a></div>
+                {% else %}
+
+                    {% for order in orders %}
+                        <div class="card">
+                            <div class="card-header">
+                                <b>Zamówienie #{{ order.id }}</b>
+                                <span class="badge bg-secondary">Status: {{ order.status }}</span>
+                            </div>
+                            <table class="table card-body">
+                                <thead>
+                                <tr>
+                                    <th>Produkt</th>
+                                    <th>Cena</th>
+                                    <th>Ilość</th>
+                                    <th>Kwota całkowita</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for item in order.items.all %}
+                                    <tr>
+                                        <td>{{ item.product.name }}</td>
+                                        <td>{{ item.price }}</td>
+                                        <td>{{ item.quantity }}</td>
+                                        <td>{% widthratio item.price 1 item.quantity %}</td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                            <div class="card-footer text-muted text-end">
+                                <b>Całkowita kwota zamówienia:</b> {{ order.order_total }}
+                            </div>
+                        </div>
+                        <br><br>
+                    {% endfor %}
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+{% endblock %}

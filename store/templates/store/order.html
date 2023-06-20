@@ -1,0 +1,73 @@
+{% extends 'bootstrap5/bootstrap5.html' %}
+
+{% load bootstrap5 %}
+{% load mptt_tags %}
+{% load static %}
+
+{% block bootstrap5_title %}Zamówienie{% endblock %}
+
+{% block bootstrap5_content %}
+
+    {% include 'navbar.html' %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <br>
+
+                {% if not cart.items.count %}
+                    <div class="alert alert-info">Cart is empty</div>
+
+                {% else %}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for item in cart.items.all %}
+                            <tr>
+                                <td><a href="{% url 'product' item.product.id %}">{{ item.product.name }}</a></td>
+                                <td>{{ item.product.price }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{% widthratio item.product.price 1 item.quantity %}</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <form class="row" method="post" action="{% url 'place_order' %}" autocomplete="off">
+            {% csrf_token %}
+
+            <div class="col-6">
+                <label for="shipping_address" class="form-label">Shipping address</label>
+                <textarea name="shipping_address" id="shipping_address" class="form-control"></textarea>
+            </div>
+
+            <div class="col-6">
+                <label for="billing_address" class="form-label">Billing address</label>
+                <textarea name="billing_address" id="billing_address" class="form-control"></textarea>
+            </div>
+
+            <div class="col-12 text-end">
+                <br>
+                <button type="submit" class="btn btn-primary" name="place_order">Place Order</button>
+            </div>
+
+        </form>
+
+    </div>
+
+    {% include 'footer.html' %}
+
+{% endblock %}

@@ -36,7 +36,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # local apps
-    "products.apps.ProductsConfig",
+    "store.apps.StoreConfig",
+    # libraries
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'mptt',
     'bootstrap5',
 ]
@@ -56,7 +60,7 @@ ROOT_URLCONF = 'trekking_store.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'products', 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'store', 'templates'), os.path.join(BASE_DIR, 'templates', 'allauth')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -114,12 +118,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'products/static']
+STATICFILES_DIRS = [BASE_DIR / 'store/static']
 MEDIA_ROOT = os.path.join(BASE_DIR, 'upload')
 MEDIA_URL = '/media/'
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1
+LOGIN_URL = "account_login"
+LOGIN_REDIRECT_URL = "user_profile"
